@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fusion Creation | Digital Innovation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            500: '#ec4899', // Pink/Magenta for "Fusion"
+                            600: '#db2777',
+                            900: '#831843',
+                            950: '#500724',
+                        },
+                        accent: {
+                            500: '#8b5cf6', // Purple for blending
+                        },
+                        dark: {
+                            bg: '#0a0a0a',
+                            card: '#171717',
+                            text: '#a3a3a3'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'], // More modern font
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0a0a0a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ec4899;
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ec4899, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+            animation: gradientMove 5s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            background: rgba(23, 23, 23, 0.8);
+            border-color: rgba(236, 72, 153, 0.3);
+            box-shadow: 0 20px 40px -10px rgba(236, 72, 153, 0.15);
+        }
+
+        .service-card:hover i {
+            transform: scale(1.2) rotate(5deg);
+            color: #ec4899;
+            filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.5));
+        }
+        
+        .portfolio-overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0,0,0,0.4), transparent);
+        }
+
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-10px);
+            overflow: hidden;
+        }
+        #mobile-menu.active {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-24">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer group" onclick="window.scrollTo(0,0)">
+                    <div class="relative w-11 h-11 mr-3 flex items-center justify-center bg-gradient-to-br from-brand-500 to-accent-500 rounded-xl shadow-lg group-hover:shadow-brand-500/50 transition-all border border-white/10">
+                        <span class="font-extrabold text-white text-xl tracking-tighter leading-none font-sans">FC</span>
+                    </div>
+                    <span class="font-bold text-2xl tracking-tight text-white">FUSION<span class="font-light text-gray-400">CREATION</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a href="#services" class="text-gray-300 hover:text-white hover:scale-105 transition-all text-sm font-medium relative group">
+                        Services
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#work" class="text-gray-300 hover:text-white hover:scale-105 transition-all text-sm font-medium relative group">
+                        Work
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#about" class="text-gray-300 hover:text-white hover:scale-105 transition-all text-sm font-medium relative group">
+                        About
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-500 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#contact" class="bg-white text-black px-6 py-3 rounded-full text-sm font-bold hover:bg-brand-500 hover:text-white transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_20px_rgba(236,72,153,0.6)]">
+                        Let's Talk
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white p-2 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="md:hidden bg-black border-b border-gray-800">
+            <div class="px-4 pt-2 pb-8 space-y-2">
+                <a href="#services" class="block px-4 py-4 text-lg font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10">Services</a>
+                <a href="#work" class="block px-4 py-4 text-lg font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10">Work</a>
+                <a href="#about" class="block px-4 py-4 text-lg font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10">About</a>
+                <a href="#contact" class="block mt-4 px-4 py-4 text-lg font-bold text-center bg-brand-600 rounded-xl text-white shadow-lg shadow-brand-900/50">Start Project</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Enhanced Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div class="glow-blob bg-brand-600 w-[600px] h-[600px] top-[-20%] left-[-10%] animate-pulse-slow"></div>
+            <div class="glow-blob bg-accent-500 w-[500px] h-[500px] bottom-[-10%] right-[-10%] animate-pulse-slow" style="animation-delay: 2s;"></div>
+            <div class="glow-blob bg-blue-600 w-[400px] h-[400px] top-[40%] left-[30%] opacity-20 animate-pulse-slow" style="animation-delay: 4s;"></div>
+            
+            <!-- Grid Pattern Overlay -->
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgNDBMMTQwIDBoMXYxSDB6IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiIHN0cm9rZS13aWR0aD0iMSIvPgo8L3N2Zz4=')] opacity-30"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center relative z-10">
+            <div class="md:w-1/2 text-center md:text-left mb-12 md:mb-0">
+                <div class="inline-flex items-center px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-brand-100 text-xs font-bold tracking-widest uppercase mb-8 animate-fade-in-up shadow-lg shadow-brand-500/10">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 mr-3 animate-pulse shadow-[0_0_10px_#ec4899]"></span>
+                    Welcome to Fusion Creation
+                </div>
+                <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-[1.1] animate-fade-in-up" style="animation-delay: 0.1s;">
+                    Ignite Your <br>
+                    <span class="gradient-text">Digital Soul</span>
+                </h1>
+                <p class="text-xl text-gray-400 mb-10 max-w-lg mx-auto md:mx-0 leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
+                    Where creativity meets technology. We fuse bold ideas with pixel-perfect design to create brands that are impossible to ignore.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5 justify-center md:justify-start animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <a href="#work" class="group relative px-8 py-4 bg-white text-black rounded-full font-bold overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]">
+                        <span class="relative z-10">Explore Work</span>
+                        <div class="absolute inset-0 bg-brand-500 transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
+                        <span class="absolute inset-0 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">Explore Work</span>
+                    </a>
+                    <a href="https://wa.me/917071370980" class="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 backdrop-blur-sm rounded-full font-semibold text-white transition-all hover:border-brand-500/50">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Hero Visual -->
+            <div class="md:w-1/2 relative animate-fade-in-up" style="animation-delay: 0.5s;">
+                <div class="relative w-full max-w-lg mx-auto aspect-square animate-float">
+                    <!-- Decorative Circle Rings -->
+                    <div class="absolute inset-0 border border-white/5 rounded-full scale-110 animate-spin-slow"></div>
+                    <div class="absolute inset-0 border border-dashed border-white/10 rounded-full scale-125 animate-spin-slow" style="animation-direction: reverse; animation-duration: 20s;"></div>
+                    
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                         alt="Abstract Fusion Art" 
+                         class="rounded-full shadow-[0_0_100px_rgba(236,72,153,0.3)] object-cover w-full h-full border border-white/10 relative z-10">
+                    
+                    <!-- Glass Card 1 -->
+                    <div class="absolute bottom-10 -left-4 bg-black/60 backdrop-blur-xl p-5 rounded-2xl border border-white/10 shadow-2xl z-20 animate-bounce" style="animation-duration: 4s;">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-gradient-to-r from-brand-500 to-orange-500 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase tracking-wider">Creative Impact</p>
+                                <p class="text-xl font-bold text-white">Limitless</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee/Trusted Section -->
+    <div class="border-y border-white/5 bg-white/[0.02] py-8 overflow-hidden">
+        <div class="flex items-center gap-16 animate-scroll whitespace-nowrap min-w-full px-4">
+             <!-- Repeating content for seamless feel would require JS or duplicated HTML, keeping it simple here -->
+             <span class="text-2xl font-bold text-white/20 uppercase tracking-widest">Strategy</span>
+             <span class="text-brand-500/50 text-xl">●</span>
+             <span class="text-2xl font-bold text-white/20 uppercase tracking-widest">Design</span>
+             <span class="text-brand-500/50 text-xl">●</span>
+             <span class="text-2xl font-bold text-white/20 uppercase tracking-widest">Development</span>
+             <span class="text-brand-500/50 text-xl">●</span>
+             <span class="text-2xl font-bold text-white/20 uppercase tracking-widest">Marketing</span>
+             <span class="text-brand-500/50 text-xl">●</span>
+             <span class="text-2xl font-bold text-white/20 uppercase tracking-widest">Fusion</span>
+             <span class="text-brand-500/50 text-xl">●</span>
+             <span class="text-2xl font-bold text-white/20 uppercase tracking-widest">Innovation</span>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <span class="text-brand-500 font-bold tracking-wider uppercase text-sm">What We Do</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-6">Our Fusion Services</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">We blend different disciplines to create a holistic digital presence.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card bg-dark-card p-10 rounded-3xl border border-white/5 group cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:border-brand-500/50 transition-colors">
+                        <i class="fas fa-code text-3xl text-gray-300 transition-all duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Web Architecture</h3>
+                    <p class="text-gray-400 leading-relaxed">Robust, scalable, and lightning-fast websites built on the cutting edge of technology.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card bg-dark-card p-10 rounded-3xl border border-white/5 group cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:border-blue-500/50 transition-colors">
+                        <i class="fas fa-layer-group text-3xl text-gray-300 transition-all duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">UI/UX Fusion</h3>
+                    <p class="text-gray-400 leading-relaxed">Designing interfaces that feel natural, look stunning, and convert visitors into loyalists.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card bg-dark-card p-10 rounded-3xl border border-white/5 group cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:border-purple-500/50 transition-colors">
+                        <i class="fas fa-server text-3xl text-gray-300 transition-all duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Web Apps</h3>
+                    <p class="text-gray-400 leading-relaxed">Powerful, interactive web applications tailored to streamline your business operations.</p>
+                </div>
+                
+                 <!-- Service 4 -->
+                 <div class="service-card bg-dark-card p-10 rounded-3xl border border-white/5 group cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:border-pink-500/50 transition-colors">
+                        <i class="fab fa-shopify text-3xl text-gray-300 transition-all duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Shopify Themes</h3>
+                    <p class="text-gray-400 leading-relaxed">Custom, high-performance Shopify themes designed to maximize conversions and sales.</p>
+                </div>
+
+                 <!-- Service 5 -->
+                 <div class="service-card bg-dark-card p-10 rounded-3xl border border-white/5 group cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:border-orange-500/50 transition-colors">
+                        <i class="fas fa-terminal text-3xl text-gray-300 transition-all duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Source Code</h3>
+                    <p class="text-gray-400 leading-relaxed">Clean, modular, and well-documented source code that your team can easily maintain and scale.</p>
+                </div>
+
+                 <!-- Service 6 -->
+                 <div class="service-card bg-dark-card p-10 rounded-3xl border border-white/5 group cursor-pointer">
+                    <div class="w-16 h-16 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:border-green-500/50 transition-colors">
+                        <i class="fas fa-brain text-3xl text-gray-300 transition-all duration-300"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Brand Evolution</h3>
+                    <p class="text-gray-400 leading-relaxed">Strategic rebranding and identity design to keep you relevant in a changing world.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="work" class="py-32 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                <div>
+                    <span class="text-brand-500 font-bold tracking-wider uppercase text-sm">Portfolio</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-4 text-white">Selected Masterpieces</h2>
+                </div>
+                <a href="#" class="hidden md:inline-flex px-6 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all text-sm font-bold">
+                    View All Projects
+                </a>
+            </div>
+
+            <!-- Masonry/Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Project 1 -->
+                <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fintech" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1">
+                    <div class="absolute inset-0 portfolio-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
+                        <span class="text-brand-400 font-bold tracking-wider text-sm mb-2 uppercase">Fintech Revolution</span>
+                        <h3 class="text-3xl font-bold text-white mb-2">Nova Banking</h3>
+                        <div class="w-full h-[1px] bg-white/20 my-4 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                        <div class="flex justify-between items-center">
+                            <p class="text-gray-300 font-medium">App & Dashboard</p>
+                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:bg-brand-500 hover:text-white transition-colors">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer shadow-2xl md:translate-y-16">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fashion" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1">
+                    <div class="absolute inset-0 portfolio-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
+                        <span class="text-brand-400 font-bold tracking-wider text-sm mb-2 uppercase">E-Commerce</span>
+                        <h3 class="text-3xl font-bold text-white mb-2">Vogue Street</h3>
+                        <div class="w-full h-[1px] bg-white/20 my-4 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                        <div class="flex justify-between items-center">
+                            <p class="text-gray-300 font-medium">Brand Identity</p>
+                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:bg-brand-500 hover:text-white transition-colors">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cyber" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1">
+                    <div class="absolute inset-0 portfolio-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
+                        <span class="text-brand-400 font-bold tracking-wider text-sm mb-2 uppercase">Cybersecurity</span>
+                        <h3 class="text-3xl font-bold text-white mb-2">SecureNet</h3>
+                        <div class="w-full h-[1px] bg-white/20 my-4 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                        <div class="flex justify-between items-center">
+                            <p class="text-gray-300 font-medium">Web Platform</p>
+                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:bg-brand-500 hover:text-white transition-colors">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="group relative overflow-hidden rounded-[2rem] aspect-[4/3] cursor-pointer shadow-2xl md:translate-y-16">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Energy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1">
+                    <div class="absolute inset-0 portfolio-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-10">
+                        <span class="text-brand-400 font-bold tracking-wider text-sm mb-2 uppercase">Clean Energy</span>
+                        <h3 class="text-3xl font-bold text-white mb-2">Solaris Inc.</h3>
+                        <div class="w-full h-[1px] bg-white/20 my-4 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                        <div class="flex justify-between items-center">
+                            <p class="text-gray-300 font-medium">Rebranding</p>
+                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:bg-brand-500 hover:text-white transition-colors">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 relative overflow-hidden">
+         <div class="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-brand-900/10 to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-20">
+                <div class="lg:w-1/2 relative">
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-brand-500 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse"></div>
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-500 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fusion Team" class="rounded-3xl shadow-2xl border border-white/10 relative z-10 rotate-2 hover:rotate-0 transition-transform duration-500">
+                </div>
+                <div class="lg:w-1/2">
+                    <span class="text-brand-500 font-bold tracking-wider uppercase text-sm">Who We Are</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mt-3 mb-8">Thinkers. Dreamers. <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-accent-500">Creators.</span></h2>
+                    <p class="text-gray-400 mb-8 leading-relaxed text-lg">
+                        Fusion Creation isn't just an agency; it's a mindset. We believe that the best work happens at the intersection of discipline and play. Founded in 2020, we've been helping bold brands navigate the digital noise with clarity and purpose.
+                    </p>
+                    
+                    <div class="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
+                        <div class="text-center lg:text-left">
+                            <h4 class="text-4xl font-extrabold text-white mb-1">50+</h4>
+                            <p class="text-sm text-gray-500 font-medium">Global Awards</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <h4 class="text-4xl font-extrabold text-white mb-1">200+</h4>
+                            <p class="text-sm text-gray-500 font-medium">Happy Clients</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <h4 class="text-4xl font-extrabold text-white mb-1">5yr</h4>
+                            <p class="text-sm text-gray-500 font-medium">Innovation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-32 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Echoes of Satisfaction</h2>
+                <p class="text-gray-400">Stories from those who dared to fuse with us.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-dark-card p-8 rounded-3xl border border-white/5 relative hover:bg-white/[0.02] transition-colors">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-14 h-14 rounded-full border-2 border-brand-500 p-0.5">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-white text-lg">Sarah J.</h4>
+                            <p class="text-xs text-brand-400 uppercase tracking-wider font-bold">CEO, TechFlow</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic leading-relaxed">"Fusion Creation transformed our outdated platform into a modern masterpiece. Their team is simply out of this world."</p>
+                    <div class="mt-6 flex text-brand-500 text-sm gap-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-dark-card p-8 rounded-3xl border border-white/5 relative hover:bg-white/[0.02] transition-colors mt-0 md:-mt-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-14 h-14 rounded-full border-2 border-brand-500 p-0.5">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-white text-lg">Mike Ross</h4>
+                            <p class="text-xs text-brand-400 uppercase tracking-wider font-bold">Founder, Artistry</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic leading-relaxed">"They captured the essence of our brand perfectly. The new design has increased our conversions by 200%."</p>
+                    <div class="mt-6 flex text-brand-500 text-sm gap-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-dark-card p-8 rounded-3xl border border-white/5 relative hover:bg-white/[0.02] transition-colors">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="w-14 h-14 rounded-full border-2 border-brand-500 p-0.5">
+                        <div class="ml-4">
+                            <h4 class="font-bold text-white text-lg">Elena R.</h4>
+                            <p class="text-xs text-brand-400 uppercase tracking-wider font-bold">Director, Eco</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic leading-relaxed">"Professional, visionary, and incredibly skilled. Working with Fusion Creation was the best decision we made this year."</p>
+                    <div class="mt-6 flex text-brand-500 text-sm gap-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-[3rem] p-0.5 shadow-2xl">
+                <div class="bg-[#0a0a0a] rounded-[calc(3rem-2px)] p-10 md:p-16 overflow-hidden relative">
+                    <!-- Decor -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+
+                    <div class="text-center mb-12 relative z-10">
+                        <h2 class="text-4xl font-bold mb-4 text-white">Let's Build Something Extraordinary</h2>
+                        <p class="text-gray-400">Your vision, our fusion. Reach out today.</p>
+                    </div>
+
+                    <form class="space-y-8 relative z-10" onsubmit="event.preventDefault(); showSuccess();">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="group">
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-brand-500 transition-colors">Name</label>
+                                <input type="text" class="w-full bg-white/5 border-b border-gray-700 rounded-t-lg px-4 py-4 text-white focus:outline-none focus:border-brand-500 focus:bg-white/10 transition-all placeholder-gray-600" placeholder="John Doe" required>
+                            </div>
+                            <div class="group">
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-brand-500 transition-colors">Email</label>
+                                <input type="email" class="w-full bg-white/5 border-b border-gray-700 rounded-t-lg px-4 py-4 text-white focus:outline-none focus:border-brand-500 focus:bg-white/10 transition-all placeholder-gray-600" placeholder="john@fusion.com" required>
+                            </div>
+                        </div>
+                        
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-brand-500 transition-colors">Project Type</label>
+                            <select class="w-full bg-white/5 border-b border-gray-700 rounded-t-lg px-4 py-4 text-white focus:outline-none focus:border-brand-500 focus:bg-white/10 transition-all appearance-none cursor-pointer">
+                                <option class="bg-gray-900">Web Development</option>
+                                <option class="bg-gray-900">UI/UX Design</option>
+                                <option class="bg-gray-900">Brand Strategy</option>
+                                <option class="bg-gray-900">Marketing Fusion</option>
+                            </select>
+                        </div>
+
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 group-focus-within:text-brand-500 transition-colors">Message</label>
+                            <textarea rows="4" class="w-full bg-white/5 border-b border-gray-700 rounded-t-lg px-4 py-4 text-white focus:outline-none focus:border-brand-500 focus:bg-white/10 transition-all placeholder-gray-600 resize-none" placeholder="Tell us about your galaxy..."></textarea>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="inline-block px-12 py-4 bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold rounded-full hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] hover:-translate-y-1 transition-all duration-300">
+                                Send Signal
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Success Message -->
+                    <div id="success-msg" class="hidden mt-8 p-6 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400 text-center backdrop-blur-sm animate-fade-in-up">
+                        <i class="fas fa-check-circle text-2xl mb-2 block"></i>
+                        <span class="font-bold text-lg">Transmission Received!</span><br>
+                        <span class="text-sm opacity-80">We'll be in touch within 24 light-hours.</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-black pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+                <div class="md:w-1/3">
+                    <div class="flex items-center mb-6">
+                        <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white mr-3">
+                            <i class="fas fa-bolt text-sm"></i>
+                        </div>
+                        <span class="font-bold text-2xl tracking-tight text-white">FUSION<span class="font-light text-gray-400">CREATION</span></span>
+                    </div>
+                    <p class="text-gray-500 mb-8 leading-relaxed">
+                        We are a digital innovation agency fusing strategy, design, and technology to build brands that matter.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-500 hover:text-white transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-500 hover:text-white transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-500 hover:text-white transition-all">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-12 md:gap-24">
+                    <div>
+                        <h4 class="text-white font-bold mb-6 text-lg">Sitemap</h4>
+                        <ul class="space-y-4 text-gray-500">
+                            <li><a href="#services" class="hover:text-brand-500 transition-colors">Services</a></li>
+                            <li><a href="#work" class="hover:text-brand-500 transition-colors">Work</a></li>
+                            <li><a href="#about" class="hover:text-brand-500 transition-colors">Agency</a></li>
+                            <li><a href="#contact" class="hover:text-brand-500 transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-white font-bold mb-6 text-lg">Contact</h4>
+                        <ul class="space-y-4 text-gray-500">
+                            <li class="flex items-center">
+                                <i class="fas fa-envelope mr-3 text-brand-500"></i>
+                                <span>fusioncreation90@gmail.com</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-phone mr-3 text-brand-500"></i>
+                                <span>+91 7071370980</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1 mr-3 text-brand-500"></i>
+                                <span>Lucknow ( Uttar Pradesh )</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/5 pt-8 text-center text-gray-600 text-sm flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2023 Fusion Creation Agency. All rights reserved.</p>
+                <div class="space-x-8 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Icon -->
+    <a href="https://wa.me/917071370980" target="_blank" class="fixed bottom-8 right-8 z-50 bg-[#25D366] hover:bg-[#128C7E] text-white w-16 h-16 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(37,211,102,0.5)] transition-all duration-300 hover:scale-110 group">
+        <i class="fab fa-whatsapp text-4xl"></i>
+        <!-- Tooltip -->
+        <span class="absolute right-full mr-4 bg-white text-black px-3 py-1 rounded-lg text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            Chat with us!
+        </span>
+    </a>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Logic
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const icon = btn.querySelector('i');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            if(menu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Navbar Glass Effect on Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-lg');
+                navbar.classList.replace('bg-transparent', 'glass-nav');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+
+        // Success Message
+        function showSuccess() {
+            const form = document.querySelector('form');
+            const msg = document.getElementById('success-msg');
+            
+            form.style.opacity = '0';
+            form.style.pointerEvents = 'none';
+            form.style.height = '0';
+            form.style.overflow = 'hidden';
+            
+            msg.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
