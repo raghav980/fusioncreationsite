@@ -314,20 +314,33 @@
             }
         }
 
-        // CSV Parser Function (Handles commas inside quotes)
+        // Improved CSV Parser Function (Handles Quotes and Commas correctly)
         function parseCSV(csvText) {
             const lines = csvText.split(/\r\n|\n/);
-            const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/^"|"$/g, ''));
             const result = [];
 
             for (let i = 1; i < lines.length; i++) {
-                const line = lines[i];
-                if (!line.trim()) continue;
+                const line = lines[i].trim();
+                if (!line) continue;
 
-                // Complex regex to handle commas inside quotes
-                const matches = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
-                // Fallback splitting if regex fails (simple CSV)
-                const values = matches.length > 0 ? matches : line.split(',');
+                // Robust manual parser loop to handle commas inside quotes
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                        current += char;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current);
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                values.push(current); // Push the last value
 
                 if (values.length >= 3) { // Ensure basic data exists
                     let obj = {};
@@ -335,6 +348,7 @@
                     // Clean values (remove quotes)
                     const cleanValues = values.map(val => {
                         let v = val ? val.trim() : "";
+                        // Remove surrounding quotes if present
                         if (v.startsWith('"') && v.endsWith('"')) {
                             v = v.substring(1, v.length - 1);
                         }
@@ -344,13 +358,12 @@
 
                     // Map based on fixed index to ensure reliability
                     // Assumed Order: category, title, price, image, description
-                    // Note: Users often mess up headers, so we map by index if possible
                     
                     obj.category = cleanValues[0] || 'other';
                     obj.title = cleanValues[1] || 'Untitled';
                     obj.price = cleanValues[2] || '$0';
                     obj.image = cleanValues[3] || 'https://placehold.co/600x400?text=No+Image';
-                    obj.description = cleanValues[4] || '';
+                    obj.description = cleanValues[4] || ''; // Description is fetched here
                     
                     // Normalize category for filtering
                     obj.category = obj.category.toLowerCase().trim();
