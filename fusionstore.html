@@ -314,62 +314,75 @@
             }
         }
 
-        // Improved CSV Parser Function (Handles Quotes and Commas correctly)
+        // ---------------------------------------------------------
+        // ADVANCED CSV PARSER (Fixes Missing Descriptions Issues)
+        // ---------------------------------------------------------
         function parseCSV(csvText) {
-            const lines = csvText.split(/\r\n|\n/);
-            const result = [];
+            const rows = [];
+            let currentRow = [];
+            let currentField = '';
+            let inQuotes = false;
+            
+            // Character-by-character parsing to handle quotes and newlines accurately
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
 
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
-
-                // Robust manual parser loop to handle commas inside quotes
-                const values = [];
-                let current = '';
-                let inQuotes = false;
-
-                for (let j = 0; j < line.length; j++) {
-                    const char = line[j];
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                        current += char;
-                    } else if (char === ',' && !inQuotes) {
-                        values.push(current);
-                        current = '';
+                // Check for Quotes
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        currentField += '"'; // Double quotes inside quotes means a literal quote
+                        i++; // Skip next quote
                     } else {
-                        current += char;
+                        inQuotes = !inQuotes; // Toggle inside/outside quotes
                     }
+                } 
+                // Check for Comma (only if NOT inside quotes)
+                else if (char === ',' && !inQuotes) {
+                    currentRow.push(currentField);
+                    currentField = '';
+                } 
+                // Check for New Line (only if NOT inside quotes)
+                else if ((char === '\r' || char === '\n') && !inQuotes) {
+                    // Handle Windows line endings (\r\n)
+                    if (char === '\r' && nextChar === '\n') i++; 
+                    
+                    currentRow.push(currentField);
+                    rows.push(currentRow);
+                    currentRow = [];
+                    currentField = '';
+                } 
+                // Normal Character
+                else {
+                    currentField += char;
                 }
-                values.push(current); // Push the last value
+            }
+            
+            // Add the very last row if it exists
+            if (currentField || currentRow.length > 0) {
+                currentRow.push(currentField);
+                rows.push(currentRow);
+            }
 
-                if (values.length >= 3) { // Ensure basic data exists
-                    let obj = {};
-                    
-                    // Clean values (remove quotes)
-                    const cleanValues = values.map(val => {
-                        let v = val ? val.trim() : "";
-                        // Remove surrounding quotes if present
-                        if (v.startsWith('"') && v.endsWith('"')) {
-                            v = v.substring(1, v.length - 1);
-                        }
-                        // Handle double quotes in CSV
-                        return v.replace(/""/g, '"'); 
-                    });
+            // Convert to Objects (Skipping Header Row)
+            const result = [];
+            // Start loop from 1 to skip headers
+            for(let i = 1; i < rows.length; i++) {
+                const values = rows[i];
+                
+                // Safety Check: Row must have at least 3 columns to be valid
+                if (values.length < 3) continue;
 
-                    // Map based on fixed index to ensure reliability
-                    // Assumed Order: category, title, price, image, description
-                    
-                    obj.category = cleanValues[0] || 'other';
-                    obj.title = cleanValues[1] || 'Untitled';
-                    obj.price = cleanValues[2] || '$0';
-                    obj.image = cleanValues[3] || 'https://placehold.co/600x400?text=No+Image';
-                    obj.description = cleanValues[4] || ''; // Description is fetched here
-                    
-                    // Normalize category for filtering
-                    obj.category = obj.category.toLowerCase().trim();
+                const obj = {
+                    category: values[0] ? values[0].trim().toLowerCase() : 'other',
+                    title: values[1] ? values[1].trim() : 'Untitled',
+                    price: values[2] ? values[2].trim() : '$0',
+                    image: values[3] ? values[3].trim() : '',
+                    // Use index 4 for description. If missing, use empty string
+                    description: values[4] ? values[4].trim() : ''
+                };
 
-                    result.push(obj);
-                }
+                result.push(obj);
             }
             return result;
         }
